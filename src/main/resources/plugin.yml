@@ -1,0 +1,9 @@
+name: SurvivalMultiplayer
+version: 1.0.0
+main: dev.ohate.survivalmultiplayer.SurvivalMultiplayer
+description: Plugin that provides a bunch of utilities for an SMP.
+author: oHate
+website: https://github.com/oHate/SurvivalMultiplayer
+api-version: '1.20'
+libraries:
+  - dev.jorel:commandapi-bukkit-shade:9.2.0
