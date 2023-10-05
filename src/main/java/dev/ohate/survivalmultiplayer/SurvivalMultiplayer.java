@@ -2,9 +2,15 @@ package dev.ohate.survivalmultiplayer;
 
 import com.google.gson.JsonSyntaxException;
 import com.mongodb.client.MongoDatabase;
+import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import dev.jorel.commandapi.CommandAPIConfig;
 import dev.ohate.survivalmultiplayer.framework.Framework;
 import dev.ohate.survivalmultiplayer.framework.Module;
+import dev.ohate.survivalmultiplayer.framework.command.FrameworkCommand;
 import dev.ohate.survivalmultiplayer.module.itemfilter.ItemFilterModule;
+import dev.ohate.survivalmultiplayer.module.player.PlayerModule;
+import dev.ohate.survivalmultiplayer.module.playerdata.PlayerDataModule;
 import dev.ohate.survivalmultiplayer.mongo.Mongo;
 import dev.ohate.survivalmultiplayer.util.SurvivalMultiplayerConfig;
 import dev.ohate.survivalmultiplayer.util.json.Json;
@@ -25,7 +31,7 @@ public class SurvivalMultiplayer extends Framework {
     @Getter
     private static SurvivalMultiplayer instance;
 
-    private SurvivalMultiplayerConfig config;
+    private SurvivalMultiplayerConfig conf;
     private Mongo mongo;
     private MongoDatabase database;
 
@@ -35,14 +41,20 @@ public class SurvivalMultiplayer extends Framework {
     public void onEnable() {
         instance = this;
 
+        CommandAPI.onLoad(new CommandAPIBukkitConfig(this));
+
         loadConfig(new File(getDataFolder(), "config.json"));
 
+        new FrameworkCommand();
+
         mongo = new Mongo();
-        mongo.connect(config.getMongoUri());
+        mongo.connect(conf.getMongoUri());
         database = mongo.getClient().getDatabase("survivalmultiplayer");
 
         enabledModules.addAll(List.of(
-                new ItemFilterModule()
+                new PlayerDataModule(),
+                new ItemFilterModule(),
+                new PlayerModule()
         ));
 
         super.onEnable();
@@ -50,16 +62,18 @@ public class SurvivalMultiplayer extends Framework {
 
     private void loadConfig(File configFile) {
         if (!configFile.exists()) {
-            config = new SurvivalMultiplayerConfig();
+            configFile.getParentFile().mkdirs();
+
+            conf = new SurvivalMultiplayerConfig();
 
             try {
-                Files.writeString(configFile.toPath(), Json.writeToPrettyJson(config));
+                Files.writeString(configFile.toPath(), Json.writeToPrettyJson(conf));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                config = Json.readFromJson(new String(Files.readAllBytes(configFile.toPath())), SurvivalMultiplayerConfig.class);
+                conf = Json.readFromJson(new String(Files.readAllBytes(configFile.toPath())), SurvivalMultiplayerConfig.class);
             } catch (IOException | JsonSyntaxException e) {
                 throw new RuntimeException(e);
             }

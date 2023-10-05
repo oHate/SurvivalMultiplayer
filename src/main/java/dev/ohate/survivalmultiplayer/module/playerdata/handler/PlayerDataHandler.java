@@ -45,7 +45,7 @@ public class PlayerDataHandler extends Handler {
     public void savePlayerData(PlayerData playerData) {
         PlayerData.getCollection().replaceOne(
                 Filters.eq(playerData.getId()),
-                Json.writeToDocument(this),
+                Json.writeToDocument(playerData),
                 new ReplaceOptions().upsert(true)
         );
     }
