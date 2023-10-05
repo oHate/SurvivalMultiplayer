@@ -1,5 +1,7 @@
 package dev.ohate.survivalmultiplayer.module.playerdata.handler;
 
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
 import dev.ohate.survivalmultiplayer.SurvivalMultiplayer;
 import dev.ohate.survivalmultiplayer.framework.Handler;
 import dev.ohate.survivalmultiplayer.framework.Module;
@@ -8,6 +10,7 @@ import dev.ohate.survivalmultiplayer.module.playerdata.model.PlayerData;
 import dev.ohate.survivalmultiplayer.util.Scheduler;
 import dev.ohate.survivalmultiplayer.util.json.Json;
 import lombok.Getter;
+import org.bson.Document;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,33 +43,21 @@ public class PlayerDataHandler extends Handler {
     }
 
     public void savePlayerData(PlayerData playerData) {
-        File playerFile = new File(
-                SurvivalMultiplayer.getInstance().getDataFolder(),
-                "PlayerData/" + playerData.getUuid().toString() + ".json"
+        PlayerData.getCollection().replaceOne(
+                Filters.eq(playerData.getId()),
+                Json.writeToDocument(this),
+                new ReplaceOptions().upsert(true)
         );
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile))) {
-            writer.write(Json.writeToJson(playerData));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public PlayerData getOrCreatePlayerData(UUID uuid, String username) {
-        File playerFile = new File(
-                SurvivalMultiplayer.getInstance().getDataFolder(),
-                "PlayerData/" + uuid.toString() + ".json"
-        );
+        Document document = PlayerData.getCollection().find(Filters.eq("uuid", uuid.toString())).first();
 
-        if (!playerFile.exists()) {
-            return new PlayerData(uuid, username);
-        } else {
-            try {
-                return Json.readFromJson(new String(Files.readAllBytes(playerFile.toPath())), PlayerData.class);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        if (document != null) {
+            return Json.readFromDocument(document, PlayerData.class);
         }
+
+        return new PlayerData(uuid, username);
     }
 
 }

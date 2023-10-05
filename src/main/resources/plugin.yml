@@ -7,3 +7,4 @@ website: https://github.com/oHate/SurvivalMultiplayer
 api-version: '1.20'
 libraries:
   - dev.jorel:commandapi-bukkit-shade:9.2.0
+  - org.mongodb:mongodb-driver-sync:4.10.2

@@ -1,15 +1,27 @@
 package dev.ohate.survivalmultiplayer.util.json;
 
 import com.google.gson.*;
+import dev.ohate.survivalmultiplayer.util.json.adapter.BSONDateAdapter;
+import dev.ohate.survivalmultiplayer.util.json.adapter.BSONLongAdapter;
+import dev.ohate.survivalmultiplayer.util.json.adapter.BSONObjectIdAdapter;
 import dev.ohate.survivalmultiplayer.util.json.adapter.UUIDAdapter;
 import lombok.Getter;
+import org.bson.Document;
+import org.bson.json.JsonMode;
+import org.bson.json.JsonWriterSettings;
+import org.bson.types.ObjectId;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class Json {
+
+    private static final JsonWriterSettings RELAXED_WRITER = JsonWriterSettings.builder()
+            .outputMode(JsonMode.RELAXED)
+            .build();
 
     private static final Map<Type, Object> TYPE_ADAPTERS = new HashMap<>();
 
@@ -18,6 +30,9 @@ public class Json {
 
     @Getter
     private static Gson prettyGson;
+
+    @Getter
+    private static Gson documentGson;
 
     static {
         registerTypeAdapter(UUID.class, new UUIDAdapter());
@@ -42,7 +57,14 @@ public class Json {
         }
 
         gson = gsonBuilder.create();
-        prettyGson = gsonBuilder.setPrettyPrinting().create();
+
+        prettyGson = gson.newBuilder().setPrettyPrinting().create();
+
+        documentGson = gson.newBuilder()
+                .registerTypeAdapter(ObjectId.class, new BSONObjectIdAdapter())
+                .registerTypeAdapter(Date.class, new BSONDateAdapter())
+                .registerTypeAdapter(Long.class, new BSONLongAdapter())
+                .create();
     }
 
     public static JsonObject writeToPrettyTree(Object object) {
@@ -61,12 +83,20 @@ public class Json {
         return gson.toJson(object);
     }
 
+    public static Document writeToDocument(Object object) {
+        return Document.parse(documentGson.toJson(object));
+    }
+
     public static <T> T readFromJson(String json, Class<T> clazz) throws JsonSyntaxException {
         return gson.fromJson(json, clazz);
     }
 
     public static <T> T readFromJson(JsonElement json, Class<T> clazz) throws JsonSyntaxException {
         return gson.fromJson(json, clazz);
+    }
+
+    public static <T> T readFromDocument(Document document, Class<T> clazz) throws JsonSyntaxException {
+        return documentGson.fromJson(document.toJson(RELAXED_WRITER), clazz);
     }
 
 }
