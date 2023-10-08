@@ -8,6 +8,7 @@ import dev.jorel.commandapi.CommandAPIConfig;
 import dev.ohate.survivalmultiplayer.framework.Framework;
 import dev.ohate.survivalmultiplayer.framework.Module;
 import dev.ohate.survivalmultiplayer.framework.command.FrameworkCommand;
+import dev.ohate.survivalmultiplayer.module.chat.ChatModule;
 import dev.ohate.survivalmultiplayer.module.itemfilter.ItemFilterModule;
 import dev.ohate.survivalmultiplayer.module.player.PlayerModule;
 import dev.ohate.survivalmultiplayer.module.playerdata.PlayerDataModule;
@@ -54,7 +55,8 @@ public class SurvivalMultiplayer extends Framework {
         enabledModules.addAll(List.of(
                 new PlayerDataModule(),
                 new ItemFilterModule(),
-                new PlayerModule()
+                new PlayerModule(),
+                new ChatModule()
         ));
 
         super.onEnable();

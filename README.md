@@ -14,10 +14,10 @@ Back when I played Survival with friends I would always make a plugin to make th
   - [ ] Mute
 
 - [ ] Messaging
-  - [ ] Chat Format
+  - [x] Chat Format
   - [ ] Chat Filter
   - [ ] Anti-Spam
-  - [ ] /message and /reply
+  - [x] /message and /reply
 
 - [x] Player Data
   - [x] Saving Player Data

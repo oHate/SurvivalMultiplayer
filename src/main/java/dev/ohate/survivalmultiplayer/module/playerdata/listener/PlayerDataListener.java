@@ -2,7 +2,7 @@ package dev.ohate.survivalmultiplayer.module.playerdata.listener;
 
 import dev.ohate.survivalmultiplayer.module.playerdata.handler.PlayerDataHandler;
 import dev.ohate.survivalmultiplayer.module.playerdata.model.PlayerData;
-import dev.ohate.survivalmultiplayer.util.Colors;
+import dev.ohate.survivalmultiplayer.util.C;
 import dev.ohate.survivalmultiplayer.util.Scheduler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -22,8 +22,8 @@ public class PlayerDataListener implements Listener {
 
         if (player != null && player.isOnline()) {
             event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-            event.kickMessage(Component.text("You tried to login too quickly after disconnecting.", Colors.RED));
-            Scheduler.runTask(() -> player.kick(Component.text("Duplicate login kick", Colors.RED)));
+            event.kickMessage(Component.text("You tried to login too quickly after disconnecting.", C.FAIL));
+            Scheduler.runTask(() -> player.kick(Component.text("Duplicate login kick", C.FAIL)));
             return;
         }
 

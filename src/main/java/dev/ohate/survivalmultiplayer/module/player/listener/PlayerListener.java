@@ -1,13 +1,15 @@
 package dev.ohate.survivalmultiplayer.module.player.listener;
 
-import dev.ohate.survivalmultiplayer.module.player.PlayerModule;
-import dev.ohate.survivalmultiplayer.util.Colors;
+import dev.ohate.commonlib.Colors;
+import dev.ohate.commonlib.UnicodeUtil;
+import dev.ohate.survivalmultiplayer.util.C;
 import dev.ohate.survivalmultiplayer.util.Message;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,10 +30,10 @@ public class PlayerListener implements Listener {
         HoverEvent<Component> hoverEvent = HoverEvent.showText(Component.textOfChildren(
                 Component.text("You died at: ", NamedTextColor.GRAY),
                 Component.join(Message.SPACE_SEPARATOR, List.of(
-                        Component.text(loc.blockX(), Colors.CYAN),
-                        Component.text(loc.blockY(), Colors.CYAN),
-                        Component.text(loc.blockZ(), Colors.CYAN),
-                        Component.text(loc.getWorld().getName(), Colors.CYAN)
+                        Component.text(loc.blockX(), C.MAIN),
+                        Component.text(loc.blockY(), C.MAIN),
+                        Component.text(loc.blockZ(), C.MAIN),
+                        Component.text(loc.getWorld().getName(), C.MAIN)
                 ))).applyFallbackStyle(Message.DEFAULT_STYLE));
 
         player.sendMessage(Component.space());
@@ -43,9 +45,9 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.joinMessage(Component.textOfChildren(
                 Component.text("<", NamedTextColor.DARK_GRAY, TextDecoration.BOLD),
-                Component.text("+", NamedTextColor.DARK_GREEN, TextDecoration.BOLD),
+                Component.text("+", C.SUCCESS, TextDecoration.BOLD),
                 Component.text("> ", NamedTextColor.DARK_GRAY, TextDecoration.BOLD),
-                Component.text(event.getPlayer().getName() + " has joined the game.", NamedTextColor.GREEN)
+                Component.text(event.getPlayer().getName() + " has joined the game.", NamedTextColor.GRAY)
         ));
     }
 
@@ -53,9 +55,9 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         event.quitMessage(Component.textOfChildren(
                 Component.text("<", NamedTextColor.DARK_GRAY, TextDecoration.BOLD),
-                Component.text("-", NamedTextColor.DARK_RED, TextDecoration.BOLD),
+                Component.text("-", C.FAIL, TextDecoration.BOLD),
                 Component.text("> ", NamedTextColor.DARK_GRAY, TextDecoration.BOLD),
-                Component.text(event.getPlayer().getName() + " has left the game.", NamedTextColor.RED)
+                Component.text(event.getPlayer().getName() + " has left the game.", NamedTextColor.GRAY)
         ));
     }
 

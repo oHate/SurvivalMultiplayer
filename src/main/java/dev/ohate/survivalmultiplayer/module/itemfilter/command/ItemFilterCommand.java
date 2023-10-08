@@ -4,7 +4,7 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ItemStackArgument;
 import dev.ohate.survivalmultiplayer.module.playerdata.handler.PlayerDataHandler;
 import dev.ohate.survivalmultiplayer.module.playerdata.model.PlayerData;
-import dev.ohate.survivalmultiplayer.util.Colors;
+import dev.ohate.survivalmultiplayer.util.C;
 import dev.ohate.survivalmultiplayer.util.Message;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -36,12 +36,12 @@ public class ItemFilterCommand {
 
                     if (added) {
                         player.sendMessage(Message.message(
-                                Component.translatable(material.translationKey(), Colors.GREEN),
+                                Component.translatable(material.translationKey(), C.SUCCESS),
                                 Component.text(" has been added to your filtered items list.", NamedTextColor.GRAY)
                         ));
                     } else {
                         player.sendMessage(Message.message(
-                                Component.translatable(material.translationKey(), Colors.RED),
+                                Component.translatable(material.translationKey(), C.FAIL),
                                 Component.text(" was already added to your filtered items list.", NamedTextColor.GRAY)
                         ));
                     }
@@ -63,12 +63,12 @@ public class ItemFilterCommand {
 
                     if (removed) {
                         player.sendMessage(Message.message(
-                                Component.translatable(material.translationKey(), Colors.GREEN),
+                                Component.translatable(material.translationKey(), C.SUCCESS),
                                 Component.text(" has been removed from your filtered items list.", NamedTextColor.GRAY)
                         ));
                     } else {
                         player.sendMessage(Message.message(
-                                Component.translatable(material.translationKey(), Colors.RED),
+                                Component.translatable(material.translationKey(), C.FAIL),
                                 Component.text(" wasn't added to your filtered items list.", NamedTextColor.GRAY)
                         ));
                     }
