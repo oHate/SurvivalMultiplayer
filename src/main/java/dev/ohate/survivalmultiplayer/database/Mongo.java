@@ -1,4 +1,4 @@
-package dev.ohate.survivalmultiplayer.mongo;
+package dev.ohate.survivalmultiplayer.database;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;

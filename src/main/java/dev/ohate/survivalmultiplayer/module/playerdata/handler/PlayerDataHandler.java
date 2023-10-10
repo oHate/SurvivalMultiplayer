@@ -50,14 +50,20 @@ public class PlayerDataHandler extends Handler {
         );
     }
 
-    public PlayerData getOrCreatePlayerData(UUID uuid, String username) {
+    public PlayerData getLocalPlayerData(UUID uuid) {
+        return playerData.get(uuid);
+    }
+
+    public PlayerData retrieveFromMongo(UUID uuid) {
         Document document = PlayerData.getCollection().find(Filters.eq("uuid", uuid.toString())).first();
 
-        if (document != null) {
-            return Json.readFromDocument(document, PlayerData.class);
-        }
+        return document != null ? Json.readFromDocument(document, PlayerData.class) : null;
+    }
 
-        return new PlayerData(uuid, username);
+    public PlayerData getOrCreatePlayerData(UUID uuid, String username) {
+        PlayerData playerData = retrieveFromMongo(uuid);
+
+        return playerData != null ? playerData : new PlayerData(uuid, username);
     }
 
 }

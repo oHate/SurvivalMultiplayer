@@ -4,7 +4,7 @@ import com.google.gson.JsonSyntaxException;
 import com.mongodb.client.MongoDatabase;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
-import dev.jorel.commandapi.CommandAPIConfig;
+import dev.ohate.survivalmultiplayer.database.Redis;
 import dev.ohate.survivalmultiplayer.framework.Framework;
 import dev.ohate.survivalmultiplayer.framework.Module;
 import dev.ohate.survivalmultiplayer.framework.command.FrameworkCommand;
@@ -12,13 +12,10 @@ import dev.ohate.survivalmultiplayer.module.chat.ChatModule;
 import dev.ohate.survivalmultiplayer.module.itemfilter.ItemFilterModule;
 import dev.ohate.survivalmultiplayer.module.player.PlayerModule;
 import dev.ohate.survivalmultiplayer.module.playerdata.PlayerDataModule;
-import dev.ohate.survivalmultiplayer.mongo.Mongo;
+import dev.ohate.survivalmultiplayer.database.Mongo;
 import dev.ohate.survivalmultiplayer.util.SurvivalMultiplayerConfig;
 import dev.ohate.survivalmultiplayer.util.json.Json;
-import lombok.Data;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +30,7 @@ public class SurvivalMultiplayer extends Framework {
     private static SurvivalMultiplayer instance;
 
     private SurvivalMultiplayerConfig conf;
+    private Redis redis;
     private Mongo mongo;
     private MongoDatabase database;
 
@@ -47,6 +45,9 @@ public class SurvivalMultiplayer extends Framework {
         loadConfig(new File(getDataFolder(), "config.json"));
 
         new FrameworkCommand();
+
+        redis = new Redis();
+        redis.connect(conf.getRedisUri());
 
         mongo = new Mongo();
         mongo.connect(conf.getMongoUri());
