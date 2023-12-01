@@ -10,7 +10,7 @@ import dev.ohate.survivalmultiplayer.framework.Module;
 import dev.ohate.survivalmultiplayer.framework.command.FrameworkCommand;
 import dev.ohate.survivalmultiplayer.module.chat.ChatModule;
 import dev.ohate.survivalmultiplayer.module.itemfilter.ItemFilterModule;
-import dev.ohate.survivalmultiplayer.module.player.PlayerModule;
+import dev.ohate.survivalmultiplayer.module.simple.SimpleModule;
 import dev.ohate.survivalmultiplayer.module.playerdata.PlayerDataModule;
 import dev.ohate.survivalmultiplayer.database.Mongo;
 import dev.ohate.survivalmultiplayer.util.SurvivalMultiplayerConfig;
@@ -56,7 +56,7 @@ public class SurvivalMultiplayer extends Framework {
         enabledModules.addAll(List.of(
                 new PlayerDataModule(),
                 new ItemFilterModule(),
-                new PlayerModule(),
+                new SimpleModule(),
                 new ChatModule()
         ));
 

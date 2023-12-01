@@ -1,14 +1,10 @@
-package dev.ohate.survivalmultiplayer.module.player.listener;
+package dev.ohate.survivalmultiplayer.module.simple.listener;
 
-import dev.ohate.commonlib.Colors;
-import dev.ohate.commonlib.UnicodeUtil;
 import dev.ohate.survivalmultiplayer.util.C;
 import dev.ohate.survivalmultiplayer.util.Message;
-import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
