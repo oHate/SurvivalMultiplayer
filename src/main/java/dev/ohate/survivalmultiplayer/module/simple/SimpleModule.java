@@ -3,8 +3,7 @@ package dev.ohate.survivalmultiplayer.module.simple;
 import dev.ohate.survivalmultiplayer.SurvivalMultiplayer;
 import dev.ohate.survivalmultiplayer.framework.Framework;
 import dev.ohate.survivalmultiplayer.framework.Module;
-import dev.ohate.survivalmultiplayer.module.simple.listener.CustomPortalListener;
-import dev.ohate.survivalmultiplayer.module.simple.listener.PlayerListener;
+import dev.ohate.survivalmultiplayer.module.simple.listener.*;
 import lombok.Getter;
 import org.bukkit.event.Listener;
 
@@ -39,7 +38,10 @@ public class SimpleModule extends Module {
     public List<Listener> getListeners() {
         return List.of(
                 new PlayerListener(),
-                new CustomPortalListener()
+                new CustomPortalListener(),
+                new BottledExpListener(),
+                new DragonEggListener(),
+                new FastLeafDecayListener()
         );
     }
 
